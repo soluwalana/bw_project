@@ -1,0 +1,74 @@
+[
+{
+    "fields": {
+        "username": "samo",
+        "first_name": "",
+        "last_name": "",
+        "is_active": true,
+        "is_superuser": true,
+        "is_staff": true,
+        "last_login": "2015-08-24T01:28:27.880Z",
+        "groups": [],
+        "user_permissions": [],
+        "password": "pbkdf2_sha256$20000$AOhngFb7LKqv$OR2zB0q6qKTOp5lK0isekkHECq6xDs+aSf6WwQgKYW8=",
+        "email": "soluwalana@gmail.com",
+        "date_joined": "2015-08-24T01:28:04.576Z"
+    },
+    "model": "auth.user",
+    "pk": 1
+},
+{
+    "fields": {
+        "username": "example1",
+        "first_name": "",
+        "last_name": "",
+        "is_active": true,
+        "is_superuser": false,
+        "is_staff": false,
+        "last_login": null,
+        "groups": [],
+        "user_permissions": [],
+        "password": "pbkdf2_sha256$20000$xWHg1zB6kzTv$EiEbBTpafQK/n3JV/7VYPF6AbpV11TyUy5XDW/Ghrzs=",
+        "email": "",
+        "date_joined": "2015-08-24T01:28:42.339Z"
+    },
+    "model": "auth.user",
+    "pk": 2
+},
+{
+    "fields": {
+        "username": "lily",
+        "first_name": "",
+        "last_name": "",
+        "is_active": true,
+        "is_superuser": false,
+        "is_staff": false,
+        "last_login": null,
+        "groups": [],
+        "user_permissions": [],
+        "password": "pbkdf2_sha256$20000$PEvQp7cxRiLK$TJo1tQ0CZB6OI+BPm1tz4/MIHaU643K4do/zSJ/kcKk=",
+        "email": "",
+        "date_joined": "2015-08-24T01:28:54.376Z"
+    },
+    "model": "auth.user",
+    "pk": 3
+},
+{
+    "fields": {
+        "username": "mimi",
+        "first_name": "",
+        "last_name": "",
+        "is_active": true,
+        "is_superuser": false,
+        "is_staff": false,
+        "last_login": null,
+        "groups": [],
+        "user_permissions": [],
+        "password": "pbkdf2_sha256$20000$HjGp4Hoh2taU$SEsw4+3HCbIkzH1wzbU3vlkrx1L+kKi0nFOOQ/J87gE=",
+        "email": "",
+        "date_joined": "2015-08-24T01:29:33.695Z"
+    },
+    "model": "auth.user",
+    "pk": 4
+}
+]
