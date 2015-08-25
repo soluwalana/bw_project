@@ -69,7 +69,11 @@ class Auctioneer(object):
         if not self.push:
             return
             
-        auction.refresh_from_db()
+        try:
+            auction.refresh_from_db()
+        except Exception as err:
+            print err
+        
         bids = Bid.objects.filter(auction=auction, bid_amount=F('auction__cur_price'))
         winner_id = None
         if len(bids) > 0:

@@ -52,7 +52,13 @@ class SimpleTest(TestCase):
         assert(response.status_code == 200)
         
         #switch user and bid
-        self.client.login(username='lily', password='lily')
+        response = self.client.get('/logout/')
+        print response.status_code
+        
+        response = self.client.post('/login/?next=/', {'username': 'lili', 'password': 'lili'})
+        assert(response.status_code == 302)
+        assert(response.get('Location') == 'http://testserver/')
+                
         response = self.client.get('/auction/1/')
         assert(response.status_code == 200)
 
@@ -65,6 +71,7 @@ class SimpleTest(TestCase):
         response = self.client.post('/bid/1/', {
             'bprice': 'hello'
         })
+        print 'should be 400', response.status_code
         assert(response.status_code == 400)
 
         response = self.client.post('/bid/1/', {
@@ -91,6 +98,16 @@ class SimpleTest(TestCase):
         response = self.client.get('/auction/1/')
         assert(response.status_code == 200)
         assert('<span class="won"> Congratulations!! You won this item!! </span>' in response.content)
-        self.client.login(username='mimi', password='mimi')
 
+        response = self.client.get('/items/')
+        assert('Test Post </a> purchased for $105.2' in response.content)
+        
+        response = self.client.get('/logout/')
+        assert(response.status_code == 200)
+        response = self.client.post('/login/?next=/', {'username': 'mimi', 'password': 'mimi'})
+        assert(response.status_code == 302)
+        assert(response.get('Location') == 'http://testserver/')
+
+        response = self.client.get('/items/')
+        assert(' Test Post </a> was sold for $105.2' in response.content)
         
