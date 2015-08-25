@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 
 from django.db import IntegrityError, transaction
 from django.db.models.aggregates import Max
-from django.db.models import F
+from django.db.models import F, Q
 
 from apps import AUCTIONEER
 from models import Auction, Bid
@@ -99,7 +99,8 @@ def auctions(request):
 def my_items(request):
     now = pytz.utc.localize(datetime.now())
     
-    sold = Auction.objects.filter(owner=request.user, expires__lt=now)
+    sold = Auction.objects.filter(Q(owner=request.user, expires__lt=now), ~Q(list_price=F('cur_price')))
+    not_sold = Auction.objects.filter(Q(owner=request.user, expires__lt=now), Q(list_price=F('cur_price')))
     selling = Auction.objects.filter(owner=request.user, expires__gt=now)
     wbids = Bid.objects.values('auction').filter(
         bidder=request.user, bid_amount=F('auction__cur_price'), auction__expires__lt=now
@@ -114,6 +115,7 @@ def my_items(request):
         
     return render(request, 'items.html', {
         'sold': sold,
+        'not_sold': not_sold,
         'selling': selling,
         'won': auctions_won,
         'bidding': bid_on,

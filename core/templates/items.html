@@ -16,6 +16,13 @@
   {% endfor %}
 </div>
 
+<h3> Auctions that didn't sell </h3>
+<div>
+    {% for auction in not_sold %}
+     <div><a href="{% url 'auction' auction.id %}"> {{auction.item_name}} </a> didn't meet reserve of ${{auction.cur_price|div:100}}</div>
+  {% endfor %}
+</div>
+
 <h3> Auctions that you are selling </h3>
 <div>
   {% for auction in selling %}
