@@ -3,7 +3,7 @@ from datetime import datetime
 from collections import defaultdict
 from models import Bid
 from django.db.models import F
-import time, pusher
+import time, pusher, re, os
     
 
 class Auctioneer(object):
@@ -11,19 +11,39 @@ class Auctioneer(object):
         the notification of bids on auctions """
     
     def __init__(self):
+        # Not Sure if pusher.Pusher object is thread safe, so assume it isn't
         self.push_lock = Lock()
 
-        # Not Sure if this is thread safe, so assume it isn't
+        self.push, self.key, self.secret, self.app_id = (None, None, None, None)
+                
+        url = os.environ.get(
+            'PUSHER_URL',
+            'http://6c26621f31ef7307ee0b:90c16ef8025db847d5d0@api.pusherapp.com/apps/137638'
+        )
+        
+        match = re.search('https?://(\w+):(\w+)@[\w\./]*?(\d+)$', url)
+        
+        if not match:
+            print "Can Not Initialize pusher!!"
+            return
+
+        self.key, self.secret, self.app_id = match.groups()
+
+        print self.key, self.secret, self.app_id
+        
         self.push = pusher.Pusher(
-            app_id='137304',
-            key='6f1c0b6c435fb05bea49',
-            secret='22868ac04ab28a7ae5ec',
+            app_id=self.app_id,
+            key=self.key,
+            secret=self.secret,
             ssl=True,
             port=443
         )
 
     def create(self, auction, duration):
         """ Creates a new auction channel """
+        if not self.push:
+            return
+        
         timer = Timer(duration, lambda:
               self.end(auction)
         )
@@ -36,6 +56,9 @@ class Auctioneer(object):
         
     def authenticate(self, channel, socket):
         """ Proxy authenticate with the lock held """
+        if not self.push:
+            return
+            
         with self.push_lock:
             return self.push.authenticate(
                 channel=channel, socket_id=socket
@@ -43,6 +66,9 @@ class Auctioneer(object):
     
     def end(self, auction):
         """ End the current acution """
+        if not self.push:
+            return
+            
         auction.refresh_from_db()
         bids = Bid.objects.filter(auction=auction, bid_amount=F('auction__cur_price'))
         winner_id = None
@@ -58,6 +84,9 @@ class Auctioneer(object):
             
     def bid(self, auction, bid):
         """ Update the bid of this auction """
+        if not self.push:
+            return
+            
         with self.push_lock:
             print auction.id, 'biding', bid.bid_amount
             self.push.trigger('private-auction-' + str(auction.id), 'update', {

@@ -22,7 +22,7 @@
      <div><a href="{% url 'auction' auction.id %}"> {{auction.item_name}} </a> is currently going for $<span id="selling-{{auction.id}}">{{auction.cur_price|div:100}}</span></div>
      <script type="text/javascript">
        $(function() {
-          window.createUpdateChannel('{{ auction.id }}');
+          window.createUpdateChannel('{{ push_key }}', '{{ auction.id }}');
       });
       </script>
   {% endfor %}

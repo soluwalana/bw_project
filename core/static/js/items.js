@@ -1,8 +1,8 @@
 Pusher.log = function(message) {
     console.log(message);
 };
-window.createUpdateChannel = function(auction_id) {
-    var pusher = new Pusher('6f1c0b6c435fb05bea49', {
+window.createUpdateChannel = function(key, auction_id) {
+    var pusher = new Pusher(key, {
         encrypted: true,
         authEndpoint: '/pusher_auth'
     });

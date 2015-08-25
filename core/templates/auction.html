@@ -7,7 +7,7 @@
     <script src="{% static "js/auction.js" %}" type="text/javascript"></script>
     <script type="text/javascript">
       $(function() {
-          window.createUpdateChannel('{{ auction.id }}', '{{ user_id }}');
+          window.createUpdateChannel('{{ push_key}}', '{{ auction.id }}', '{{ user_id }}');
       });
     </script>
 

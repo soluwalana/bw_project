@@ -81,7 +81,8 @@ def auction(request, auction_id):
         'bids': bids,
         'max_bid': max_bid,
         'ended': ended,
-        'user_id': request.user.id
+        'user_id': request.user.id,
+        'push_key': AUCTIONEER.key
     })
 
 @login_required(login_url='/login/')
@@ -90,7 +91,8 @@ def auctions(request):
     now = pytz.utc.localize(datetime.now())
     available = Auction.objects.filter(expires__gt=now)
     return render(request, 'auctions.html', {
-        'available': available
+        'available': available,
+        'push_key': AUCTIONEER.key
     })
     
 @login_required(login_url='/login/')
@@ -112,7 +114,8 @@ def my_items(request):
         'sold': sold,
         'selling': selling,
         'won': auctions_won,
-        'bidding': bid_on
+        'bidding': bid_on,
+        'push_key': AUCTIONEER.key
     })
     
 ## JSON API 

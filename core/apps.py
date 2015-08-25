@@ -22,5 +22,7 @@ class CoreAppConfig(AppConfig):
             auctions = Auction.objects.filter(expires__gt=now)
             for auction in auctions:
                 AUCTIONEER.create(auction, int((auction.expires - now).seconds))
-        except:
+                
+        except Exception as err:
+            print 'Exception while creating auctioneer,', err
             return

@@ -49,9 +49,9 @@ $(function() {
         console.log(message);
     };
     /* Creates an update channel for the auction */
-    window.createUpdateChannel = function(auction_id, user_id) {
+    window.createUpdateChannel = function(key, auction_id, user_id) {
         // Move this key to a centralized file 
-        var pusher = new Pusher('6f1c0b6c435fb05bea49', {
+        var pusher = new Pusher(key, {
             encrypted: true,
             authEndpoint: '/pusher_auth'
         });
