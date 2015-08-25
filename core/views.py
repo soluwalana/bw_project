@@ -101,7 +101,9 @@ def my_items(request):
     
     sold = Auction.objects.filter(owner=request.user, expires__lt=now)
     selling = Auction.objects.filter(owner=request.user, expires__gt=now)
-    wbids = Bid.objects.values('auction').filter(bidder=request.user, bid_amount=F('auction__cur_price'), auction__expires__lt=now)
+    wbids = Bid.objects.values('auction').filter(
+        bidder=request.user, bid_amount=F('auction__cur_price'), auction__expires__lt=now
+    )
 
     wids = set([wbid['auction'] for wbid in wbids])
     auctions_won = Auction.objects.filter(pk__in=wids)
