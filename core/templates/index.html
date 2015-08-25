@@ -2,7 +2,9 @@
 
 {% block content %}
 <div>
-  {{ templatized_variable }}
-
+  <h3> Auction Site (TODO: come up with clever name here) </h3>
+  <a href="{% url 'my_items' %}">Items You've Won / Sold</a><br/>
+  <a href="{% url 'auctions' %}">Items Up For Sale</a><br/>
+  <a href="{% url 'create' %}">Create a new Item</a><br/>
 </div>
 {% endblock %}

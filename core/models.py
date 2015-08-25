@@ -7,10 +7,14 @@ from django.contrib.auth.models import User
 class Auction(models.Model):
     item_name = models.CharField(max_length=255)
     description = models.CharField(max_length=1024)
+    list_price = models.PositiveIntegerField()
     cur_price = models.PositiveIntegerField()
     owner = models.ForeignKey(User)
     created = models.DateTimeField(auto_now_add=True)
     expires = models.DateTimeField()
+
+    class Meta:
+        unique_together = ('owner', 'item_name')
 
 class Bid(models.Model):
     bidder = models.ForeignKey(User)

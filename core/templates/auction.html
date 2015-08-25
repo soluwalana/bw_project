@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% load math %}
+{% load staticfiles %}
+{% block scripts %}
+    <script src="https://js.pusher.com/2.2/pusher.min.js" type="text/javascript"></script>
+    <script src="{% static "js/auction.js" %}" type="text/javascript"></script>
+    <script type="text/javascript">
+      $(function() {
+          window.createUpdateChannel('{{ auction.id }}', '{{ user_id }}');
+      });
+    </script>
+
+    <style type="text/css">
+      .mine {
+          background-color:#33CCFF;
+          width:320px;
+      }
+    </style>
+{% endblock %}
+
+
+{% block content %}
+
+<div id="errDialog" title="Error Message"></div>
+<div id="dialog" title="Message"></div>
+
+<div>
+  <div id="ended" style="display:{% if ended %}block{% else %}none{% endif %}" >
+      <span>The following auction has ended.</span>
+      {% if max_bid and max_bid.bidder.id == user_id and ended%}
+      <span class="won"> Congratulations!! You won this item!! </span>
+      {% endif %}
+  </div>
+  <h3 class="title"> {{ auction.item_name }} </h3>
+  <p class="desc"> {{ auction.description }} </p>
+  
+  <form id="submit_bid" method="post" action="{% url 'bid' auction.id %}">
+    {% csrf_token %}
+    <label for="bprice">Your Bid?: <input id="bid_input" type="text" name="bprice" value="{% if max_bid %}{{ max_bid.bid_amount|add:1|div:100 }}{% else %}{{ auction.cur_price|add:1|div:100 }}{% endif %}"/></label><br/>
+    <input type="submit" value="Bid!" />
+  </form>
+
+  <div class="text">Current Bid History:</div>
+
+  <div id="bid_history">
+    {% for bid in bids %}
+        <div class="bid{% if forloop.first and ended %} won{% endif %}{% if bid.bidder.id == user_id %} mine{% endif %}">
+          <span class="username">User {{bid.bidder.id}}</span> bid $<span class="bid_amount">{{ bid.bid_amount|div:100 }}</span> at <span class="bid_date">{{ bid.bid_time|date:"D, d M Y H:i:s" }} </span>  
+        </div>
+    {% endfor %}
+  </div>
+
+</div>
+{% endblock %}

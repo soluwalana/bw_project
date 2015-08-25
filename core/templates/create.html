@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div>
+  {% if error_message %} <p><strong>{{ error_message }}</strong></p>{% endif %}
+  <form action="{% url 'create' %}" method="post">
+    {% csrf_token %}
+    <label for="aname">Name of Item: <input type="text" name="aname" value=""/></label><br/>
+    <label for="adesc">Description of Item: <textarea name="adesc" value=""></textarea></label><br/>
+    <label for="aprice">Initial Cost of Item (###.##): <input type="text" name="aprice" value="1"/></label><br/>
+    <label for="aduration">Duration of Auction In Seconds: <input type="text" name="aduration" value="1"/></label><br/>
+    <input type="submit" value="Create" />
+  </form>
+</div>
+{% endblock %}
